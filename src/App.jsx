@@ -3,6 +3,10 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import {fetchMajors} from './services/service'
+import { routeTree } from './routeTree.gen'
+import { RouterProvider, createRouter } from '@tanstack/react-router'
+
+const router = createRouter({ routeTree })
 
 function App() {
   const [majors, setMajors] = useState([])
