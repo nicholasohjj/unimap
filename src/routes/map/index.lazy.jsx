@@ -1,7 +1,8 @@
 import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
 import { fetchMajors } from "../../services/service";
 import { useState, useEffect } from "react";
-
+import Node from "../../components/node";
+import { motion } from "framer-motion";
 export const Route = createLazyFileRoute("/map/")({
   component: Index,
 });
@@ -28,32 +29,44 @@ function Index() {
     navigate({ to: `/map/${major_id}` });
   };
   return (
-    <>
+    <div
+      style={{
+        position: "relative",
+        width: "100vw",
+        height: "100vh",
+      }}
+    >
       {majors.length > 0 ? (
-        <div className="App">
-          <header className="App-header">
-            <p>
-              Edit <code>App.jsx</code> and save to reload.
-            </p>
+        majors.map((major) => (
+          <motion.div
+          key={major.major_id}
+          drag
+          dragConstraints={{
+            left: 0,
+            right: window.innerWidth,
+            top: 0,
+            bottom: window.innerHeight,
+          }}
+          style={{
+            position: "absolute",
+            left: `${Math.random() * (window.innerWidth - 200)}px`,
+            top: `${Math.random() * (window.innerHeight - 100)}px`,
+          }}
+        >
+          <Node
+            key={major.major_id}
+            node={[
+              {
+                label: major.major_name,
+              },
+            ]}
+          />
+                    </motion.div>
 
-            <button onClick={() => setCount(count + 1)}>
-              count is: {count}
-            </button>
-            <ul>
-              {majors.map((major) => (
-                <li
-                  key={major.major_id}
-                  onClick={() => goToMap(major.major_id)}
-                >
-                  {major.major_name}
-                </li>
-              ))}
-            </ul>
-          </header>
-        </div>
+        ))
       ) : (
         <div>Loading...</div>
       )}
-    </>
+    </div>
   );
 }

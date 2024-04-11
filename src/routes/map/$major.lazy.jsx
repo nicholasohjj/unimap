@@ -20,7 +20,6 @@ function Major() {
   return (
     <div>
       <Node node={tabs}/>
-
     </div>
   );
 }

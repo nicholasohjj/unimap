@@ -8,26 +8,33 @@ const Node = ({ node }) => {
   return (
     <div>
       <motion.div
-      drag
-      dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+        drag
+        dragConstraints={{
+            left: 0,
+            right: window.innerWidth,
+            top: 0,
+            bottom: window.innerHeight,
+          }}        
       >
         <div className="window">
-          <nav>
-            <ul>
-              {node.map((item) => (
-                <li
-                  key={item.label}
-                  className={item === selectedTab ? "selected" : ""}
-                  onClick={() => setSelectedTab(item)}
-                >
-                  {`${item.icon} ${item.label}`}
-                  {item === selectedTab ? (
-                    <motion.div className="underline" layoutId="underline" />
-                  ) : null}
-                </li>
-              ))}
-            </ul>
-          </nav>
+          {node.length > 1 && (
+            <nav>
+              <ul>
+                {node.map((item) => (
+                  <li
+                    key={item.label}
+                    className={item === selectedTab ? "selected" : ""}
+                    onClick={() => setSelectedTab(item)}
+                  >
+                    {`${item.label}`}
+                    {item === selectedTab ? (
+                      <motion.div className="underline" layoutId="underline" />
+                    ) : null}
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )}
           <main>
             <AnimatePresence mode="wait">
               <motion.div
@@ -37,7 +44,7 @@ const Node = ({ node }) => {
                 exit={{ y: -10, opacity: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                {selectedTab ? selectedTab.icon : "CS1101S 😋"}
+                {selectedTab ? selectedTab.label : "CS1101S 😋"}
               </motion.div>
             </AnimatePresence>
           </main>
