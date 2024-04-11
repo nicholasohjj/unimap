@@ -14,6 +14,7 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as MaprootImport } from './routes/map/__root'
+import { Route as MapMajoridImport } from './routes/map/$major_id'
 
 // Create Virtual Routes
 
@@ -21,7 +22,6 @@ const MapImport = createFileRoute('/map')()
 const AboutLazyImport = createFileRoute('/about')()
 const IndexLazyImport = createFileRoute('/')()
 const MapIndexLazyImport = createFileRoute('/map/')()
-const MapMajorLazyImport = createFileRoute('/map/$major')()
 
 // Create/Update Routes
 
@@ -50,10 +50,10 @@ const MapIndexLazyRoute = MapIndexLazyImport.update({
   getParentRoute: () => MapRoute,
 } as any).lazy(() => import('./routes/map/index.lazy').then((d) => d.Route))
 
-const MapMajorLazyRoute = MapMajorLazyImport.update({
-  path: '/$major',
-  getParentRoute: () => MapRoute,
-} as any).lazy(() => import('./routes/map/$major.lazy').then((d) => d.Route))
+const MapMajoridRoute = MapMajoridImport.update({
+  path: '/map/$major_id',
+  getParentRoute: () => rootRoute,
+} as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -67,6 +67,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutLazyImport
       parentRoute: typeof rootRoute
     }
+    '/map/$major_id': {
+      preLoaderRoute: typeof MapMajoridImport
+      parentRoute: typeof rootRoute
+    }
     '/map': {
       preLoaderRoute: typeof MapImport
       parentRoute: typeof rootRoute
@@ -74,10 +78,6 @@ declare module '@tanstack/react-router' {
     '/map/__root': {
       preLoaderRoute: typeof MaprootImport
       parentRoute: typeof MapRoute
-    }
-    '/map/$major': {
-      preLoaderRoute: typeof MapMajorLazyImport
-      parentRoute: typeof MapImport
     }
     '/map/': {
       preLoaderRoute: typeof MapIndexLazyImport
@@ -91,7 +91,8 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren([
   IndexLazyRoute,
   AboutLazyRoute,
-  MapRoute.addChildren([MapMajorLazyRoute, MapIndexLazyRoute]),
+  MapMajoridRoute,
+  MapRoute.addChildren([MapIndexLazyRoute]),
 ])
 
 /* prettier-ignore-end */
