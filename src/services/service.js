@@ -12,7 +12,6 @@ export const fetchRequirements = async (major_id) => {
   const { data, error } = await supabaseClient
     .from('direct_requirements')
     .select(`
-      *,
       courses:course_code!inner (
         *
       )
@@ -21,5 +20,6 @@ export const fetchRequirements = async (major_id) => {
   if (error) {
     throw new Error(error.message);
   }
-  return data;
+  return data.map(item => item.courses);
+
 }

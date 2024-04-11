@@ -2,9 +2,8 @@ import { createFileRoute, createLazyFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { initialTabs as tabs } from "../../ingredients";
-import Node from "../../components/node";
 import { fetchRequirements } from "../../services/service";
-
+import CourseNode from "../../components/courseNode";
 const Major = () => {
   const { major_id } = Route.useParams();
   const [requirements, setRequirements] = useState([]);
@@ -32,7 +31,7 @@ const Major = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <Node node={requirement} />
+            <CourseNode course={requirement} />
           </motion.div>
         ))}
       </AnimatePresence>
