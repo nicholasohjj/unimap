@@ -13,13 +13,27 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as MaprootImport } from './routes/map/__root'
 
 // Create Virtual Routes
 
+const MapImport = createFileRoute('/map')()
 const AboutLazyImport = createFileRoute('/about')()
 const IndexLazyImport = createFileRoute('/')()
+const MapIndexLazyImport = createFileRoute('/map/')()
+const MapMajorLazyImport = createFileRoute('/map/$major')()
 
 // Create/Update Routes
+
+const MaprootRoute = MaprootImport.update({
+  id: '/__root',
+  getParentRoute: () => MapRoute,
+} as any)
+
+const MapRoute = MapImport.update({
+  path: '/map',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const AboutLazyRoute = AboutLazyImport.update({
   path: '/about',
@@ -30,6 +44,16 @@ const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+
+const MapIndexLazyRoute = MapIndexLazyImport.update({
+  path: '/',
+  getParentRoute: () => MapRoute,
+} as any).lazy(() => import('./routes/map/index.lazy').then((d) => d.Route))
+
+const MapMajorLazyRoute = MapMajorLazyImport.update({
+  path: '/$major',
+  getParentRoute: () => MapRoute,
+} as any).lazy(() => import('./routes/map/$major.lazy').then((d) => d.Route))
 
 // Populate the FileRoutesByPath interface
 
@@ -43,11 +67,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutLazyImport
       parentRoute: typeof rootRoute
     }
+    '/map': {
+      preLoaderRoute: typeof MapImport
+      parentRoute: typeof rootRoute
+    }
+    '/map/__root': {
+      preLoaderRoute: typeof MaprootImport
+      parentRoute: typeof MapRoute
+    }
+    '/map/$major': {
+      preLoaderRoute: typeof MapMajorLazyImport
+      parentRoute: typeof MapImport
+    }
+    '/map/': {
+      preLoaderRoute: typeof MapIndexLazyImport
+      parentRoute: typeof MapImport
+    }
   }
 }
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren([IndexLazyRoute, AboutLazyRoute])
+export const routeTree = rootRoute.addChildren([
+  IndexLazyRoute,
+  AboutLazyRoute,
+  MapRoute.addChildren([MapMajorLazyRoute, MapIndexLazyRoute]),
+])
 
 /* prettier-ignore-end */
