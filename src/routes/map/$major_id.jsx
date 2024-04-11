@@ -7,10 +7,12 @@ import { fetchRequirements } from "../../services/service";
 
 const Major = () => {
   const { major_id } = Route.useParams();
+  const [requirements, setRequirements] = useState([]);
 
   useEffect(() => {
     fetchRequirements(major_id)
       .then((data) => {
+        setRequirements(data);
         console.log(data);
       })
       .catch((error) => {
@@ -22,7 +24,18 @@ const Major = () => {
   useEffect(() => {}, []);
   return (
     <div>
-      <Node node={tabs} />
+      <AnimatePresence>
+        {requirements.map((requirement) => (
+          <motion.div
+            key={requirement.requirement_id}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <Node node={requirement} />
+          </motion.div>
+        ))}
+      </AnimatePresence>
     </div>
   );
 };
