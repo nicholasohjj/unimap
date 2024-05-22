@@ -3,12 +3,36 @@
         "id": 1,
         "name": "CS1010",
         "description": "Introduction to Computer Science",
-        "prereqs": []
+        "prerequisites": []
     },
     {
         "id": 2,
         "name": "CS1231S",
         "description": "Introduction to Computer Science",
-        "prereqs": []
+        "prerequisites": []
+    },
+    {
+        "id":3,
+        "name": "CS2030S",
+        "description": "Introduction to Computer Science",
+        "prerequisites": [1]
+    },
+    {
+        "id":4,
+        "name": "CS2040S",
+        "description": "Introduction to Computer Science",
+        "prerequisites": [1,2]
+    },
+    {
+        "id":5,
+        "name": "CS2100",
+        "description": "Introduction to Computer Science",
+        "prerequisites": [1]
+    },
+    {
+        "id":6,
+        "name": "CS2102",
+        "description": "Introduction to Computer Science",
+        "prerequisites": [2,3]
     }
 ]

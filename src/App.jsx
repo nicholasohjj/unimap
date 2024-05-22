@@ -6,10 +6,12 @@ import ReactFlow, {
   addEdge,
   MiniMap,
   Controls,
+  MarkerType
 } from "reactflow";
 import dagre from "dagre";
-
 import "reactflow/dist/style.css";
+import "../styles.css";
+
 import courses from "../sample.json";
 
 const courseNodes = courses.map((course) => {
@@ -20,9 +22,21 @@ const courseNodes = courses.map((course) => {
   };
 });
 
-const initialEdges = [
-  { id: "e1-2", source: "1", target: "2" }
-];
+const initialEdges = courses.flatMap((course) => 
+  course.prerequisites.map((prerequisite) => ({
+    id: `e${course.id}-${prerequisite}`,
+    source: prerequisite.toString(),
+    target: course.id.toString(),
+    markerEnd: {
+      type: MarkerType.Arrow,
+      color: "#ff0072"
+    },
+    style: {
+      strokeWidth: 1,
+      stroke: '#FF0072',
+    },
+  }))
+);
 
 const nodeWidth = 150;
 const nodeHeight = 50;
@@ -65,7 +79,7 @@ export default function App() {
     );
     setNodes(layoutedNodes);
     setEdges(layoutedEdges);
-  }, [setNodes, setEdges]);
+  }, []);
 
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge(params, eds)),
@@ -85,11 +99,11 @@ export default function App() {
 
   return (
     <ReactFlowProvider>
-      <div style={{ display: "flex", flexDirection: "row" }}>
-        <div style={{ width: "100vw", height: "100vh" }}>TEST TEST</div>
-        <div
-          style={{ width: "100vw", height: "100vh", border: "2px solid coral" }}
-        >
+      <div style={{ display: "flex", flexDirection: "row", height: "100vh" }}>
+        <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          TEST TEST
+        </div>
+        <div style={{ flex: 2, border: "2px solid coral" }}>
           <ReactFlow
             nodes={nodes}
             edges={edges}
