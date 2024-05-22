@@ -1,61 +1,113 @@
-import { useState, useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import {fetchMajors} from './services/service'
-import { routeTree } from './routeTree.gen'
-import { RouterProvider, createRouter } from '@tanstack/react-router'
+import React, { useCallback, useEffect } from "react";
+import ReactFlow, {
+  ReactFlowProvider,
+  useNodesState,
+  useEdgesState,
+  addEdge,
+  MiniMap,
+  Controls,
+} from "reactflow";
+import dagre from "dagre";
 
-const router = createRouter({ routeTree })
+import "reactflow/dist/style.css";
+import courses from "../sample.json";
 
-function App() {
-  const [majors, setMajors] = useState([])
-  const [count, setCount] = useState(0)
+const courseNodes = courses.map((course) => {
+  return {
+    id: course.id.toString(),
+    position: { x: 0, y: 0 }, // Position will be updated by layout
+    data: { label: course.name },
+  };
+});
+
+const initialEdges = [
+  { id: "e1-2", source: "1", target: "2" }
+];
+
+const nodeWidth = 150;
+const nodeHeight = 50;
+
+const getLayoutedElements = (nodes, edges) => {
+  const dagreGraph = new dagre.graphlib.Graph();
+  dagreGraph.setDefaultEdgeLabel(() => ({}));
+  dagreGraph.setGraph({ rankdir: "TB" });
+
+  nodes.forEach((node) => {
+    dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
+  });
+
+  edges.forEach((edge) => {
+    dagreGraph.setEdge(edge.source, edge.target);
+  });
+
+  dagre.layout(dagreGraph);
+
+  const layoutedNodes = nodes.map((node) => {
+    const nodeWithPosition = dagreGraph.node(node.id);
+    node.position = {
+      x: nodeWithPosition.x - nodeWidth / 2,
+      y: nodeWithPosition.y - nodeHeight / 2,
+    };
+    return node;
+  });
+
+  return { nodes: layoutedNodes, edges };
+};
+
+export default function App() {
+  const [nodes, setNodes, onNodesChange] = useNodesState(courseNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
   useEffect(() => {
-    fetchMajors()
-      .then((data) => {
-        console.log(data)
-        setMajors(data)
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-  }
-  , [])
+    const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
+      courseNodes,
+      initialEdges
+    );
+    setNodes(layoutedNodes);
+    setEdges(layoutedEdges);
+  }, [setNodes, setEdges]);
+
+  const onConnect = useCallback(
+    (params) => setEdges((eds) => addEdge(params, eds)),
+    [setEdges]
+  );
+
+  const nodeColor = (node) => {
+    switch (node.type) {
+      case "input":
+        return "#6ede87";
+      case "output":
+        return "#6865A5";
+      default:
+        return "#ff0072";
+    }
+  };
 
   return (
-    <>
-    {majors.length > 0 ? (
-      <div className="App">
-        <header className="App-header">
-          <img src={reactLogo} className="App-logo" alt="logo" />
-          <img src={viteLogo} className="Vite-logo" alt="logo" />
-          <p>
-            Edit <code>App.jsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
+    <ReactFlowProvider>
+      <div style={{ display: "flex", flexDirection: "row" }}>
+        <div style={{ width: "100vw", height: "100vh" }}>TEST TEST</div>
+        <div
+          style={{ width: "100vw", height: "100vh", border: "2px solid coral" }}
+        >
+          <ReactFlow
+            nodes={nodes}
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
+            fitView
           >
-            Learn React
-          </a>
-          <button onClick={() => setCount(count + 1)}>
-            count is: {count}
-          </button>
-          <ul>
-            {majors.map((major) => (
-              <li key={major.major_id}>{major.major_name}</li>
-            ))}
-          </ul>
-        </header>
+            <MiniMap
+              nodeColor={nodeColor}
+              nodeStrokeWidth={3}
+              zoomable
+              pannable
+            />
+            <Controls />
+          </ReactFlow>
+        </div>
       </div>
-    ) : (
-      <div>Loading...</div>
-    )}
-    </>
-  )
+    </ReactFlowProvider>
+  );
 }
-
-export default App

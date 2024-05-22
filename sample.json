@@ -1,0 +1,14 @@
+[
+    {
+        "id": 1,
+        "name": "CS1010",
+        "description": "Introduction to Computer Science",
+        "prereqs": []
+    },
+    {
+        "id": 2,
+        "name": "CS1231S",
+        "description": "Introduction to Computer Science",
+        "prereqs": []
+    }
+]
