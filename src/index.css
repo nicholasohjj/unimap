@@ -1,0 +1,66 @@
+.react-flow__node.highlight {
+  background-color: #ff0072;
+  color: white;
+}
+
+.intersection-flow .react-flow__node {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  border-radius: 1px;
+  border-width: 2px;
+  box-shadow: 6px 6px 0 1px rgba(0, 0, 0, 0.7) !important;
+}
+
+.intersection-flow .react-flow__node.selected,
+.intersection-flow .react-flow__node:hover,
+.intersection-flow .react-flow__node:focus {
+  box-shadow: 6px 6px 0 1px rgba(0, 0, 0, 0.7) !important;
+  background-color: #eee;
+}
+
+.intersection-flow .react-flow__handle {
+  display: none;
+}
+
+.download-image.react-flow {
+  background: #1a365d;
+}
+
+.download-image .react-flow__node {
+  width: 50px;
+  height: 50px;
+  color: white;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-color: white;
+}
+
+.download-image .react-flow__node-custom {
+  font-size: 12px;
+  background: #eee;
+  border: 1px solid #555;
+  border-radius: 5px;
+  text-align: center;
+  padding: 10px;
+}
+
+.download-image .react-flow__node-custom .react-flow__handle-right {
+  transform: none;
+}
+
+.download-image .download-btn {
+  border: 1px solid #eee;
+  background: #ebf8ff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.download-image .download-btn:hover {
+  opacity: 0.9;
+}

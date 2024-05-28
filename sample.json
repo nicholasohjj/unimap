@@ -1,38 +1,96 @@
 [
     {
-        "id": 1,
-        "name": "CS1010",
+        "name": "CS1101S",
         "description": "Introduction to Computer Science",
-        "prerequisites": []
+        "prerequisites": [],
+        "corequisites": [],
+        "parent": ""
     },
     {
-        "id": 2,
         "name": "CS1231S",
         "description": "Introduction to Computer Science",
-        "prerequisites": []
+        "prerequisites": [],
+        "corequisites": [],
+        "parent": ""
     },
     {
-        "id":3,
         "name": "CS2030S",
         "description": "Introduction to Computer Science",
-        "prerequisites": [1]
+        "prerequisites": [1],
+        "corequisites": [],
+        "parent": ""
     },
     {
-        "id":4,
         "name": "CS2040S",
         "description": "Introduction to Computer Science",
-        "prerequisites": [1,2]
+        "prerequisites": [1,2],
+        "corequisites": [],
+        "parent": ""
+
     },
     {
-        "id":5,
         "name": "CS2100",
         "description": "Introduction to Computer Science",
-        "prerequisites": [1]
+        "prerequisites": [1],
+        "corequisites": [],
+        "parent": ""
     },
     {
-        "id":6,
         "name": "CS2102",
         "description": "Introduction to Computer Science",
-        "prerequisites": [2,3]
+        "prerequisites": [],
+        "corequisites": [],
+        "parent": "database"
+    },
+    {
+        "name": "CS2101",
+        "description": "Introduction to Computer Science",
+        "prerequisites": [],
+        "corequisites": [8],
+        "parent": ""
+        },
+    {
+        "name": "CS2103T",
+        "description": "Introduction to Computer Science",
+        "prerequisites": [3,4],
+        "corequisites": [7],
+        "parent": ""
+    },
+    {
+        "name": "CS2109S",
+        "description": "Introduction to Computer Science",
+        "prerequisites": [3,4],
+        "corequisites": [],
+        "parent": ""
+    },
+    {
+        "name": "ES2660",
+        "description": "Introduction to Computer Science",
+        "prerequisites": [],
+        "corequisites": [],
+        "parent": ""
+    },
+    {
+        "name": "IS1108",
+        "description": "Introduction to Computer Science",
+        "prerequisites": [],
+        "corequisites": [],
+        "parent": ""
+    },
+    {
+        "name": "CS2106",
+        "description": "Introduction to Computer Science",
+        "prerequisites": [5],
+        "corequisites": [],
+        "parent": ""
+    },
+    {
+        "name": "CS3230",
+        "description": "Introduction to Computer Science",
+        "prerequisites": [],
+        "corequisites": [],
+        "parent": ""
     }
-]
+
+    
+]   
