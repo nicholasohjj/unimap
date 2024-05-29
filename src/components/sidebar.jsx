@@ -1,14 +1,25 @@
 import { useState, useEffect } from "react";
 import { Container } from "@mui/material";
-import { fetchMajors } from "../supabase/services";
+import { fetchMajors, fetchCourses } from "../supabase/services";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 const Sidebar = () => {
-  const [majors, setCourses] = useState([]);
-  const [selectedCourse, setSelectedCourse] = useState("");
+  const [majors, setMajors] = useState([]);
+  const [courses, setCourses] = useState([])
+  const [selectedMajor, setSelectedMajor] = useState("");
 
-  const handleChange = (event) => { 
-    setSelectedCourse(event.target.value);
+  const handleChange = async (event) => { 
+    setSelectedMajor(event.target.value);
+
+    try {
+      const data = await fetchCourses(event.target.value);
+      console.log("Fetched data:", data); // Log the fetched data
+      setCourses(data);
+      console.log("courses state updated:", data); // Log after setting state
+    }
+    catch (error) {
+      console.error("Error fetching courses:", error);
+    }
   };
 
   useEffect(() => {
@@ -16,7 +27,7 @@ const Sidebar = () => {
       try {
         const data = await fetchMajors();
         console.log("Fetched data:", data); // Log the fetched data
-        setCourses(data);
+        setMajors(data);
         console.log("majors state updated:", data); // Log after setting state
       } catch (error) {
         console.error("Error fetching majors:", error);
@@ -32,7 +43,7 @@ const Sidebar = () => {
       {majors && majors.length > 0 ? (
         <Select
         fullWidth
-          value={selectedCourse}
+          value={selectedMajor}
           label="Select a Major"
           onChange={handleChange}
         >
