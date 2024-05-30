@@ -1,11 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Container } from "@mui/material";
 import { fetchMajors, fetchCourses } from "../supabase/services";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import { coursesContext } from "../context";
+
 const Sidebar = () => {
   const [majors, setMajors] = useState([]);
-  const [courses, setCourses] = useState([])
+  const { courses, setCourses } = useContext(coursesContext); // Destructure context values
   const [selectedMajor, setSelectedMajor] = useState("");
 
   const handleChange = async (event) => { 

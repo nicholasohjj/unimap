@@ -1,4 +1,5 @@
 import { supabase } from "./supabase";
+
 export const fetchMajors = async () => {
   const { data, error } = await supabase.from("majors").select();
   if (error) {
@@ -11,12 +12,10 @@ export const fetchMajors = async () => {
 };
 
 export const fetchCourses = async (majorCode) => {
-  const { data, error } = await supabase
-    .from("direct_requirements")
-    .select("*, courses:moduleCode (semesters)")
-    .eq("major_code", majorCode);
+  const { data, error } = await supabase.rpc("fetchcourses", {mc: majorCode})
   if (error) {
     throw error;
   }
+  console.log("data:", data)
   return data;
 }
