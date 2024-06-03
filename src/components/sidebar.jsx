@@ -15,9 +15,7 @@ const Sidebar = () => {
 
     try {
       const data = await fetchCourses(event.target.value);
-      console.log("Fetched data:", data); // Log the fetched data
       setCourses(data);
-      console.log("courses state updated:", data); // Log after setting state
     }
     catch (error) {
       console.error("Error fetching courses:", error);
@@ -28,9 +26,7 @@ const Sidebar = () => {
     const fetchData = async () => {
       try {
         const data = await fetchMajors();
-        console.log("Fetched data:", data); // Log the fetched data
         setMajors(data);
-        console.log("majors state updated:", data); // Log after setting state
       } catch (error) {
         console.error("Error fetching majors:", error);
       }

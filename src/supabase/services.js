@@ -16,6 +16,5 @@ export const fetchCourses = async (majorCode) => {
   if (error) {
     throw error;
   }
-  console.log("data:", data)
   return data;
 }
